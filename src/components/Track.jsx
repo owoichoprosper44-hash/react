@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 
 const Track = () => {
 
@@ -19,7 +19,7 @@ const Track = () => {
 
     const handleAddTodo = () => {
         if (todoQuery.trim() !== "") {
-            const updatedTodos = [...Todo, todoQuery];
+            const updatedTodos = [...Todo,  todoQuery];
 
             setTodos(updatedTodos);
 

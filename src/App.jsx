@@ -55,6 +55,7 @@ import Dashboard from "./components/Opay";
 import Opaypractice from "./components/Opaypractice";
 import Experiment from "./components/Experiment";
 import Paystack from "./components/Paystack";
+import Vito from "../Vito";
 
 
 function App() {
@@ -66,6 +67,8 @@ function App() {
       {/* <Paystack/> */}
       <Track/>
       {/* <Cbt/> */}
+
+      <Vito/>
     
     </div>
   );
