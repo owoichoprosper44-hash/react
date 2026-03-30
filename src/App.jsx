@@ -56,7 +56,6 @@ import Opay from "./components/Opay";
 import Opaypractice from "./components/Opaypractice";
 import Experiment from "./components/Experiment";
 import Paystack from "./components/Paystack";
-import Vito from "./Vito"; // ✅ FIXED
 
 function App() {
   return (
@@ -68,7 +67,6 @@ function App() {
       {/* <Paystack/> */}
       <Track />
       {/* <Cbt/> */}
-      <Vito />
     </div>
   );
 }
