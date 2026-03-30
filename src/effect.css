@@ -1,0 +1,22 @@
+
+.drop{
+    /* transition: height, 0.5s ease;
+     */
+}
+.drop::before{
+    content: "";
+    top: 0;
+    left: 0;
+    position: absolute;
+    background-color: black;
+    width: 100%;
+    height: 0%;
+     transition: height, 0.5s ease;
+}
+
+.drop:hover::before{
+    height: 100%;
+    
+    
+}
+
