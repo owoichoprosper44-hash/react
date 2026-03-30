@@ -1,6 +1,6 @@
 import React from "react";
 
-import NavBar from "./components/NavBar";
+import NavBar from "./components/Navbar";
 import Count from "./components/Count";
 import Demo from "./Demo";
 import Prosper from "./assets/Demo2";
