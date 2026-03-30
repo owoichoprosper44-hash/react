@@ -1,11 +1,11 @@
 import React from "react";
 
-import NavBar from "./components/Navbar";
+import NavBar from "./components/navbar";
 import Count from "./components/Count";
 import Demo from "./Demo";
 import Prosper from "./assets/Demo2";
 import Button from "./components/Button";
-import Emmanuel from "./components/Card";
+import Emmanuel from "./components/card";
 import Samuel from "./components/Card2";
 import { CiHeart } from "react-icons/ci";
 import Book from "./assets/practical";
