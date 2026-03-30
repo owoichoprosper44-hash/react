@@ -1,100 +1,121 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 const Vito = () => {
   const [started, setStarted] = useState(false);
   const [text, setText] = useState("");
   const [showFinal, setShowFinal] = useState(false);
-  const [accepted, setAccepted] = useState(false); // ✅ NEW
+  const [accepted, setAccepted] = useState(false);
 
   const message =
     "Vito... I didn’t want to say this the normal way. You mean more to me than words can explain. ❤️";
 
   useEffect(() => {
-    if (started) {
-      let i = 0;
-      const interval = setInterval(() => {
-        setText((prev) => prev + message[i]);
-        i++;
-        if (i === message.length) clearInterval(interval);
-      }, 40);
+    if (!started) return;
 
-      setTimeout(() => {
-        setShowFinal(true);
-      }, 4000);
-    }
+    setText("");
+    let i = 0;
+
+    const interval = setInterval(() => {
+      setText((prev) => prev + message[i]);
+      i++;
+      if (i === message.length) clearInterval(interval);
+    }, 40);
+
+    setTimeout(() => {
+      setShowFinal(true);
+    }, message.length * 40);
+
+    return () => clearInterval(interval);
   }, [started]);
 
-  const startLove = () => {
+  const startLove = async () => {
     setStarted(true);
     const audio = new Audio("/love.mp3");
-    audio.play();
+    try {
+      await audio.play();
+    } catch (err) {}
   };
 
   const moveButton = (e) => {
-    const btn = e.target;
-    btn.style.position = "absolute";
-    btn.style.top = Math.random() * 80 + "%";
-    btn.style.left = Math.random() * 80 + "%";
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 60);
+
+    e.target.style.position = "fixed";
+    e.target.style.left = `${x}px`;
+    e.target.style.top = `${y}px`;
   };
 
-  return (
-    <div className="h-screen flex items-center justify-center bg-gradient-to-r from-pink-400 to-rose-400 text-white relative overflow-hidden">
+  const hearts = useMemo(
+    () =>
+      Array.from({ length: 20 }).map(() => ({
+        top: Math.random() * 100,
+        left: Math.random() * 100,
+      })),
+    []
+  );
 
+  return (
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-r from-pink-400 to-rose-400 text-white relative overflow-hidden px-4 py-10">
+
+      {/* START SCREEN */}
       {!started && (
-        <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold">Hey Vito 💖</h1>
-          <p className="max-w-md">
+        <div className="text-center space-y-4 max-w-sm w-full">
+          <h1 className="text-2xl sm:text-4xl font-bold">Hey Vito 💖</h1>
+
+          <p className="text-sm sm:text-base">
             I made something special for you... don’t laugh 😅
           </p>
+
           <button
             onClick={startLove}
-            className="px-6 py-3 bg-white text-pink-500 rounded-full hover:bg-pink-100 transition"
+            className="w-full sm:w-auto px-6 py-3 bg-white text-pink-500 rounded-full hover:bg-pink-100 transition"
           >
             Open it 🥺
           </button>
         </div>
       )}
 
+      {/* MAIN SCREEN */}
       {started && (
-        <div className="text-center space-y-6">
-          <h2 className="text-xl max-w-lg">{text}</h2>
+        <div className="text-center space-y-6 max-w-md w-full">
+          <h2 className="text-base sm:text-lg leading-relaxed">
+            {text}
+          </h2>
 
           {showFinal && (
             <>
-              <h1 className="text-4xl font-bold animate-bounce">
+              <h1 className="text-2xl sm:text-4xl font-bold animate-bounce">
                 I LOVE YOU VITO ❤️
               </h1>
 
-              <div className="flex gap-4 justify-center mt-4">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
                 <button
-                  onClick={() => setAccepted(true)} // ✅ UPDATED
+                  onClick={() => setAccepted(true)}
                   className="px-6 py-3 bg-white text-pink-500 rounded-full"
                 >
                   Yes 💖
                 </button>
 
                 <button
-                  onMouseOver={moveButton}
+                  onMouseEnter={moveButton}
                   className="px-6 py-3 bg-red-200 text-red-600 rounded-full"
                 >
                   No 😅
                 </button>
               </div>
 
-              {/* ✅ SWEET MESSAGE */}
               {accepted && (
-                <div className="mt-6 animate-bounce">
-                  <h2 className="text-2xl font-bold">
+                <div className="mt-6 animate-bounce px-2">
+                  <h2 className="text-lg sm:text-2xl font-bold">
                     You just made me the happiest person alive 😭❤️
                   </h2>
 
-                  <p className="mt-3 text-lg">
-                    Vito… I promise to always make you smile,
-                    to stand by you, and never take you for granted 💖
+                  <p className="mt-3 text-sm sm:text-base">
+                    Vito… I promise to always make you smile 💖
                   </p>
 
-                  <p className="mt-2 text-lg">
-                    This is just the beginning of something beautiful 🌹
+                  <p className="mt-2 text-sm sm:text-base">
+                    This is just the beginning 🌹
                   </p>
                 </div>
               )}
@@ -103,16 +124,13 @@ const Vito = () => {
         </div>
       )}
 
-      {/* Floating hearts */}
+      {/* FLOATING HEARTS (disable pointer interference) */}
       <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 25 }).map((_, i) => (
+        {hearts.map((h, i) => (
           <span
             key={i}
-            className="absolute text-xl animate-pulse"
-            style={{
-              top: Math.random() * 100 + "%",
-              left: Math.random() * 100 + "%",
-            }}
+            className="absolute text-lg sm:text-xl opacity-70 animate-pulse"
+            style={{ top: h.top + "%", left: h.left + "%" }}
           >
             ❤️
           </span>
